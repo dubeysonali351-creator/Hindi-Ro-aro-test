@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPPSC RO/ARO - विशेष्य एवं विशेषण मॉक टेस्ट (Target PCS 2.0)</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a365d; margin-bottom: 5px; font-size: 24px; }
+        .subtitle { text-align: center; color: #718096; margin-bottom: 25px; font-weight: 600; }
+        .quiz-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .question { font-size: 17px; font-weight: 600; color: #2d3748; margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn { background: #ffffff; border: 1.5px solid #cbd5e0; padding: 12px 15px; border-radius: 6px; text-align: left; cursor: pointer; font-size: 15px; transition: all 0.2s ease; }
+        .option-btn:hover { background: #edf2f7; border-color: #a0aec0; }
+        .option-btn.correct { background: #c6f6d5 !important; border-color: #38a169 !important; color: #22543d; font-weight: bold; }
+        .option-btn.wrong { background: #fed7d7 !important; border-color: #e53e3e !important; color: #742a2a; }
+        .explanation { margin-top: 15px; padding: 12px; background: #ebf8ff; border-left: 4px solid #3182ce; border-radius: 4px; font-size: 14px; color: #2b6cb0; display: none; }
+        .score-box { text-align: center; padding: 20px; background: #ebf8ff; border-radius: 8px; margin-top: 20px; font-size: 20px; font-weight: bold; color: #2b6cb0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>UPPSC RO/ARO - विशेष्य एवं विशेषण टेस्ट</h1>
+    <div class="subtitle">Target PCS 2.0 | कुल प्रश्न: 50</div>
+
+    <div id="quiz-container"></div>
+    <div id="score-container"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "1. निम्नलिखित में से 'विशेष्य' शब्द कौन-सा है?",
+        options: ["(a) आकाशीय", "(b) आराध्य", "(c) अग्नि", "(d) आश्रित"],
+        correct: 2,
+        exp: "व्याख्या: 'अग्नि' संज्ञा शब्द है, अतः यह विशेष्य है। इसका विशेषण 'आग्नेय' होता है।"
+    },
+    {
+        q: "2. 'ऋषि' संज्ञा शब्द से विशेषण शब्द क्या बनेगा?",
+        options: ["(a) आर्ष", "(b) ऋषिकल्प", "(c) ऋषितुल्य", "(d) ऋषिवत"],
+        correct: 0,
+        exp: "व्याख्या: 'ऋषि' (विशेष्य) का मानक व्याकरणिक विशेषण 'आर्ष' होता है।"
+    },
+    {
+        q: "3. निम्नलिखित में से कौन-सा शब्द 'विशेषण' नहीं है?",
+        options: ["(a) कुटिलता", "(b) कौटिल्य", "(c) जटिलता", "(d) विषाद"],
+        correct: 3,
+        exp: "व्याख्या: 'विषाद' भाववाचक संज्ञा (विशेष्य) है, इसका विशेषण 'विषण्ण' होता है।"
+    },
+    {
+        q: "4. 'नीलांबर परिधान हरित पट पर सुंदर है' - इस पंक्ति में 'हरित' शब्द क्या है?",
+        options: ["(a) विशेष्य", "(b) क्रियाविशेषण", "(c) गुणवाचक विशेषण", "(d) सार्वनामिक विशेषण"],
+        correct: 2,
+        exp: "व्याख्या: 'हरित' (हरा) शब्द 'पट' (कपड़ा) की रंग संबंधी विशेषता बता रहा है, अतः यह गुणवाचक विशेषण है।"
+    },
+    {
+        q: "5. 'भोला बालक ने क्रूर डाकू के कठोर हृदय में कोमल भावना जगा दी' - इस वाक्य में कितने विशेष्य हैं?",
+        options: ["(a) दो", "(b) तीन", "(c) चार", "(d) पाँच"],
+        correct: 2,
+        exp: "व्याख्या: 4 विशेष्य हैं -> बालक, डाकू, हृदय, और भावना।"
+    },
+    {
+        q: "6. 'चौगुना धन' में 'चौगुना' किस प्रकार का विशेषण है?",
+        options: ["(a) क्रमवाचक", "(b) आवृत्तिवाचक", "(c) गणनावाचक", "(d) समुदायवाचक"],
+        correct: 1,
+        exp: "व्याख्या: जहाँ संख्या का गुणन दर्शाया जाए, वहाँ आवृत्तिवाचक निश्चित संख्यावाचक विशेषण होता है।"
+    },
+    {
+        q: "7. 'तीनों बहनें आई हैं' - वाक्य में 'तीनों' किस प्रकार का विशेषण है?",
+        options: ["(a) प्रत्येकबोधक", "(b) समुदायवाचक", "(c) क्रमवाचक", "(d) आवृत्तिवाचक"],
+        correct: 1,
+        exp: "व्याख्या: जहाँ समूह या राशि का बोध हो (दोनों, तीनों, चारों), वहाँ समुदायवाचक विशेषण होता है।"
+    },
+    {
+        q: "8. 'निशा' का विशेषण रूप क्या होता है?",
+        options: ["(a) निशामय", "(b) निशाचर", "(c) नैश", "(d) निश्रांत"],
+        correct: 2,
+        exp: "व्याख्या: 'निशा' (विशेष्य) का व्याकरणिक विशेषण 'नैश' होता है।"
+    },
+    {
+        q: "9. 'अर्चना अत्यंत सुंदर है' - वाक्य में 'अत्यंत' क्या है?",
+        options: ["(a) विशेष्य", "(b) विशेषण", "(c) प्रविशेषण", "(d) सविशेषण"],
+        correct: 2,
+        exp: "व्याख्या: जो शब्द विशेषण ('सुंदर') की भी विशेषता बताता है, उसे प्रविशेषण कहते हैं।"
+    },
+    {
+        q: "10. 'समुद्री साँप में घातक परंतु बहुत कीमती जहर पाया जाता है' - वाक्य में है:",
+        options: ["(a) तीन विशेषण और दो विशेष्य", "(b) दो विशेषण और तीन विशेष्य", "(c) दो विशेषण और दो विशेष्य", "(d) चार विशेषण और दो विशेष्य"],
+        correct: 0,
+        exp: "व्याख्या: विशेषण -> समुद्री, घातक, कीमती। विशेष्य -> साँप, जहर।"
+    }
+];
+
+let score = 0;
+let answered = 0;
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    quizData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'quiz-card';
+        
+        let optionsHTML = '';
+        item.options.forEach((opt, optIndex) => {
+            optionsHTML += `<button class="option-btn" onclick="checkAnswer(${index}, ${optIndex}, this)">${opt}</button>`;
+        });
+
+        card.innerHTML = `
+            <div class="question">${item.q}</div>
+            <div class="options">${optionsHTML}</div>
+            <div class="explanation" id="exp-${index}">${item.exp}</div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function checkAnswer(qIndex, selectedOpt, btn) {
+    const parent = btn.parentElement;
+    const buttons = parent.querySelectorAll('.option-btn');
+    
+    // Disable all buttons in this question
+    buttons.forEach(b => b.style.pointerEvents = 'none');
+    
+    const correctOpt = quizData[qIndex].correct;
+    
+    if (selectedOpt === correctOpt) {
+        btn.classList.add('correct');
+        score++;
+    } else {
+        btn.classList.add('wrong');
+        buttons[correctOpt].classList.add('correct');
+    }
+    
+    document.getElementById(`exp-${qIndex}`).style.display = 'block';
+    answered++;
+
+    if (answered === quizData.length) {
+        showScore();
+    }
+}
+
+function showScore() {
+    const scoreBox = document.getElementById('score-container');
+    scoreBox.innerHTML = `<div class="score-box">आपका कुल स्कोर: ${score} / ${quizData.length}</div>`;
+}
+
+renderQuiz();
+</script>
+
+</body>
+</html>
